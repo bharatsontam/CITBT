@@ -1,0 +1,73 @@
+﻿@model CITBT.Models.DbModels.UserPurchasedMovies
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>UserPurchasedMovies</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardNumber)
+        </dd>
+        <dt>
+            Billing Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BAddress1), @Html.DisplayFor(model => model.BAddress2)
+            @Html.DisplayFor(model => model.BCity), @Html.DisplayFor(model => model.BState)-@Html.DisplayFor(model => model.BzipCode)
+        </dd>
+
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @ViewBag.UserName
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.MovieName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Movie.MovieName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieShowTime.ShowTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieShowTime.ShowTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PurchasePrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PurchasePrice)
+        </dd>
+    </dl>
+</div>
+<p>
+    <a href="@Url.Action("UserHome","Home")">Back to home</a> |
+    @Html.ActionLink("Cancel Booking", "Delete", new { id = Model.Id }, new { @class ="btn btn-danger" })
+</p>

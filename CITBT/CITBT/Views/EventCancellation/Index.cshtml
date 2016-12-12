@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CITBT.Models.DbModels.UserEventCancellationRequests>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Event cancellations</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Event Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProcessedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsRefunded)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProcessedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRefunded)
+            </td>
+            <td>
+                <a href="@Url.Action("Approve", "EventRegister", new { id = item.Id })" class="btn btn-info @(item.IsApproved ? "disabled" : "")">Approve</a>
+            </td>
+        </tr>
+    }
+
+</table>

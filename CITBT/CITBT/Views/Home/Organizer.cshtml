@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Organizer";
+}
+<div ng-app="OrganizerApp">
+    <div class="container" ng-controller="OrganizerController">
+        <div class="col-xs-6">
+            <h3>Event requests pending</h3>
+            <table class="table table-bordered" ng-if="EventRequestsPending.length > 0">
+                <thead>
+                    <tr>
+                        <td>Event name</td>
+                        <td>Requested date</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="EventRequestPending in EventRequestsPending">
+                    <td><label ng-bind="EventRequestPending.EventName"></label></td>
+                    <td><label ng-bind="EventRequestPending.RequestedDate"></label></td>
+                    <td><a href="@Url.Action("Delete", "EventRequest")/{{EventRequestPending.Id}}" class="btn btn-info">Cancel</a></td>
+                </tr>
+            </table>
+            <p><h4 style="color:red" ng-if="EventRequestsPending.length == 0">No pending event requests</h4></p>
+        </div>
+        <div class="col-xs-6">
+            <h3>Event requests approved</h3>
+            <table class="table table-bordered" ng-if="EventRequestsApproved.length > 0">
+                <thead>
+                    <tr>
+                        <td>Event name</td>
+                        <td>Requested date</td>
+                        <td>Processed date</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="EventRequestApproved in EventRequestsApproved">
+                    <td><label ng-bind="EventRequestApproved.EventName"></label></td>
+                    <td><label ng-bind="EventRequestApproved.RequestedDate"></label></td>
+                    <td><label ng-bind="EventRequestApproved.ProcessedDate"></label></td>
+                </tr>
+            </table>
+            <p><h4 style="color:red" ng-if="EventRequestsApproved.length == 0">No approved event requests</h4></p>
+        </div>
+    </div>
+    <div class="container" ng-controller="OrganizerController">
+        <div class="col-xs-12">
+            <h3>Updates</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>User registered for events</td>
+                    <td>{{OrganizerUpdates.UserRegisteredEventsCount}}</td>
+                </tr>
+                <tr>
+                    <td>Events opened</td>
+                    <td>{{OrganizerUpdates.OpenedEventsCount}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var organizerApp = angular.module("OrganizerApp", []);
+
+    organizerApp.factory("OrganizerService", ['$http', function ($http) {
+
+        var organizerService = {};
+
+        organizerService.GetEventRequestsPending = function () {
+            return $http.get("@Url.Action("GetEventRequestsPending", "Organizer")");
+        };
+
+        organizerService.GetEventRequestsApproved = function () {
+            return $http.get('@Url.Action("GetEventRequestsApproved", "Organizer")')
+        };
+
+        organizerService.GetOrganizerUpdates = function () {
+            return $http.get('@Url.Action("GetOrganizerUpdates", "Organizer")')
+        }
+
+        return organizerService;
+    }]);
+
+    organizerApp.controller("OrganizerController", function ($scope, OrganizerService) {
+
+        var getOrganizerUpdates = function () {
+            OrganizerService.GetEventRequestsPending()
+                .success(function (data) {
+                    $scope.EventRequestsPending = data;
+                })
+                .error(function (error) { });
+            OrganizerService.GetEventRequestsApproved()
+                .success(function (data) {
+                    $scope.EventRequestsApproved = data;
+                })
+                .error(function (error) { });
+            OrganizerService.GetOrganizerUpdates()
+                .success(function (data) {
+                    $scope.OrganizerUpdates = data;
+                })
+                .error(function (error) { });
+
+        };
+
+        getOrganizerUpdates();
+
+    });
+
+</script>

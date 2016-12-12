@@ -1,0 +1,82 @@
+﻿@model CITBT.ViewModels.Offers.OfferDetailViewModel
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>@Model.OfferName</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OfferName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OfferName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OfferPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OfferPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OfferPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OfferPercentage)
+        </dd>
+
+    </dl>
+</div>
+<p class="btn-group">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class="btn btn-primary" })
+    @Html.ActionLink("Back to Offers", "Index", null, new {@class="btn btn-default" })
+    <a href="@Url.Action("Create", "UserOffers", new { offerId = Model.Id })" class="btn btn-info">Add user to offer</a>
+</p>
+<hr />
+
+<div class="container">
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Offer Start Date</th>
+                    <th>Offer End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserApplicableToOffers)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.OfferValidStartDate</td>
+                        <td>@item.OfferValidEndDate</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="@Url.Action("Edit", "UserOffers", new { id = item.Id })" class="btn btn-info">Edit</a>
+                                <a href="@Url.Action("Delete", "UserOffers", new { id = item.Id })" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

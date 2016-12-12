@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CITBT.ViewModels.Events.EventRequests.EventRequestViewModel>
+
+@{
+    ViewBag.Title = "Event Update Requests";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table-bordered table">
+    <tr>
+        <th>
+            Requested User
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsUpdated)
+        </th>
+        
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Organizer.FirstName) @Html.DisplayFor(modelItem => item.Organizer.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsApproved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsUpdated)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Details", "Detail", new { id = item.Id }, new { @class="btn btn-info" })
+        </td>
+    </tr>
+}
+
+</table>

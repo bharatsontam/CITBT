@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CITBT.ViewModels.Offers.OfferViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Add new offer", "Create")
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OfferName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfferPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfferPercentage)
+        </th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfferName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfferPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfferPercentage)
+        </td>
+        <td>
+            <div class="btn-group">
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Details", "Detail", new { id = item.Id }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+            </div>
+        </td>
+    </tr>
+}
+
+</table>

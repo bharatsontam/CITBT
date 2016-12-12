@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CITBT.ViewModels.Movies.MovieViewModel>
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Movies";
+}
+
+<h2>Movies</h2>
+
+@if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "Admin"))
+{
+    <p>
+        @Html.ActionLink("Add new Movie", "Create")
+    </p>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieLanguage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieGenre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieCast)
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieLanguage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieGenre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieCast)
+            </td>
+            <td>
+                <div class="btn-group">
+                    @if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "Admin"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    }
+                    @Html.ActionLink("Details", "Detail", new { id = item.Id }, new { @class = "btn btn-info" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>

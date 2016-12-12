@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Click it to Book it</h1>
+    <p><a href="/Home/About" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Events</h2>
+        <p>
+            Social Events, Local Events, Movie events
+        </p>
+        @if (User.Identity.IsAuthenticated){<p><a class="btn btn-default" href="/Events">Manage &raquo;</a></p>}
+    </div>
+    <div class="col-md-6">
+        <h2>Movie Tickets</h2>
+        <p>movie tickets for all kind of movies, National Movies, International Movies</p>
+        @if (User.Identity.IsAuthenticated){<p><a class="btn btn-default" href="/Movies">Manage &raquo;</a></p>}
+    </div>
+</div>

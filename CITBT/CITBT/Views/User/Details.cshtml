@@ -1,0 +1,83 @@
+﻿@model CITBT.Models.UserDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+<h2>User Details</h2>
+
+
+
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SelectedRoles):
+        </dt>
+        <dd>
+            @foreach (var role in Model.SelectedRoles)
+            {
+                switch (role)
+                {
+                    case "Admin":
+                        <span>Admin</span>
+                        break;
+                    case "User":
+                    <span>User</span>
+                        break;
+                    case "EventOrganizer":
+                    <span>Event Organizer</span>
+                        break;
+                    case "Tester":
+                    <span>Tester</span>
+                        break;
+                }
+            }
+
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" }) |
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+</p>

@@ -1,0 +1,134 @@
+﻿@model CITBT.ViewModels.Movies.MovieDetailViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = Model.MovieName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieGenre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieGenre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieCast)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieCast)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd>
+            <img src="data:image/png;base64,@Model.Image" class="img-thumbnail" style="height:150px;width:150px" alt="No image" />
+        </dd>
+
+    </dl>
+</div>
+<p class="btn-group">
+
+    @if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "Admin"))
+    {
+        @Html.ActionLink("Edit ", "Edit", new { id = Model.Id }, new { @class="btn btn-primary" })
+        @Html.ActionLink("Back to movies list ", "Index", null, new { @class = "btn btn-default" })
+        <a href="@Url.Action("Create", "MovieShowTime", new { movieId = Model.Id })" class="btn btn-primary">Add Movie times </a>
+        if (!ViewBag.PreBookingOpened)
+        {
+            <a href="@(ViewBag.BookingOpened ? Url.Action("Delete", "MovieBookingOpen", new { movieId = Model.Id }) : Url.Action("Create", "MovieBookingOpen", new { movieId = Model.Id }))" class="btn btn-info"> @(ViewBag.BookingOpened ? "Close booking" : "Open for boooking")</a>
+        }
+        if (!ViewBag.BookingOpened)
+        {
+            <a href="@(ViewBag.PreBookingOpened ? Url.Action("Delete", "MoviePreBokingOpen", new { movieId = Model.Id }) : Url.Action("Create", "MoviePreBokingOpen", new { movieId = Model.Id }))" class="btn btn-info"> @(ViewBag.PreBookingOpened ? "Close booking" : "Open for pre boooking")</a>
+        }
+        if (ViewBag.PreBookingOpened && ViewBag.BookingOpened)
+        {
+            <a href="@Url.Action("Delete", "MoviePreBokingOpen", new { movieId = Model.Id })" class="btn btn-info">Close booking</a>
+        }
+    }
+    @if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "User"))
+    {
+        @Html.ActionLink("Back to movies list ", "Index", null, new { @class = "btn btn-primary" })
+        <a href="@Url.Action("Create", "BookingMovie", new { movieId = Model.Id })" class="btn btn-info">Book Tickets</a>
+    }
+</p>
+<hr />
+<h3>Movie Show timings</h3>
+<div class="panel">
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Theater
+                    </th>
+                    <th>
+                        Available Show time
+                    </th>
+                    @if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "Admin"))
+                    {
+                        <th>Actions</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MovieShowTimes)
+                {
+                    <tr>
+                        <th>@Html.DisplayFor(modelItem => item.Theatre.Name)</th>
+                        <th>@Html.DisplayFor(modelItem => item.ShowTime)</th>
+                        @if (CheckUserRole.IsUserInRole(User.Identity.GetUserId(), "Admin"))
+                        {
+                            <th>
+                                <div class="btn-group">
+                                    <a href="@Url.Action("Edit", "MovieShowTime", new { id = item.Id })" class="btn btn-primary">Edit</a>
+                                    <a href="@Url.Action("Delete", "MovieShowTime", new { id = item.Id })" class="btn btn-danger">Delete</a>
+                                </div>
+                            </th>
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

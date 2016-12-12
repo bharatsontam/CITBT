@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Admin";
+}
+<div ng-app="AdminApp">
+    <div class="container">
+        <div class="col-xs-6" ng-controller="adminController">
+            <h3>Event Cancellation requests</h3>
+            <table class="table table-bordered" ng-if="eventCancellationRequests.length > 0">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Event name</td>
+                        <td>Event Date</td>
+                        <td>Event Price</td>
+                        <td>Refund Price</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="eventCancellationRequest in eventCancellationRequests">
+                    <td><label ng-bind="eventCancellationRequest.Name"></label></td>
+                    <td><label ng-bind="eventCancellationRequest.EventName"></label></td>
+                    <td><label ng-bind="eventCancellationRequest.EventDateTime"></label></td>
+                    <td><label ng-bind="eventCancellationRequest.EntryFee"></label></td>
+                    <td><label ng-bind="eventCancellationRequest.PurchasePrice"></label></td>
+                    <td><a href="@Url.Action("Approve", "EventRegister")/{{eventCancellationRequest.Id}}" class="btn btn-info">Approve</a></td>
+                </tr>
+            </table>
+            <p><h4 style="color:red" ng-if="eventCancellationRequests.length == 0">No event cancellation requests</h4></p>
+        </div>
+        <div class="col-xs-6" ng-controller="adminController">
+            <h3>Movie Cancellation requests</h3>
+            <table class="table table-bordered" ng-if="movieCancellationRequests.length > 0">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Movie name</td>
+                        <td>Movie Date</td>
+                        <td>Movie Price</td>
+                        <td>Refund Price</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="movieCancellationRequest in movieCancellationRequests">
+                    <td><label ng-bind="movieCancellationRequest.Name"></label></td>
+                    <td><label ng-bind="movieCancellationRequest.MovieName"></label></td>
+                    <td><label ng-bind="movieCancellationRequest.ReleaseDate"></label></td>
+                    <td><label ng-bind="movieCancellationRequest.PurchasePrice"></label></td>
+                    <td><label ng-bind="movieCancellationRequest.PurchasePrice"></label></td>
+                    <td><a href="@Url.Action("Approve", "BookingMovie")/{{movieCancellationRequest.Id}}" class="btn btn-info">Approve</a></td>
+                </tr>
+
+            </table>
+            <p><h4 ng-if="movieCancellationRequests.length == 0" style="color:red">No movie cancellation requests</h4></p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-xs-6" ng-controller="adminController">
+            <h3>Event Update requests</h3>
+            <table class="table table-bordered" ng-if="eventRequests.length > 0">
+                <thead>
+                    <tr>
+                        <td>Requested Organizer</td>
+                        <td>Event name</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="eventUpdateRequest in eventRequests">
+                    <td><label ng-bind="eventUpdateRequest.RequestedOrganizer"></label></td>
+                    <td><label ng-bind="eventUpdateRequest.EventName"></label></td>
+                    <td><a href="@Url.Action("Approve", "EventRequest")/{{eventUpdateRequest.Id}}" class="btn btn-info">Approve</a></td>
+                </tr>
+            </table>
+            <p><h4 ng-if="eventRequests.length == 0" style="color:red">No event update requests</h4></p>
+        </div>
+        <div class="col-xs-4" ng-controller="adminController">
+            <h3>Updates</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Users booked for upcoming movies</td>
+                    <td><label ng-bind="adminUpdates.PurchasedMoviesCount"></label></td>
+                </tr>
+                <tr>
+                    <td>Users registered for upcoming events</td>
+                    <td><label ng-bind="adminUpdates.RegisteredEventsCount"></label></td>
+                </tr>
+                <tr>
+                    <td>Current running movies</td>
+                    <td><label ng-bind="adminUpdates.BookingOpenMoviesCount"></label></td>
+                </tr>
+                <tr>
+                    <td>Current running events</td>
+                    <td><label ng-bind="adminUpdates.BookingOpenEventsCount"></label></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var adminApp = angular.module("AdminApp", []);
+
+    adminApp.factory('AdminService', ['$http', function ($http) {
+        var AdminService = {};
+
+        AdminService.getEventCancellationRequests = function () {
+            return $http.get('@Url.Action("GetEventCancellationRequests", "Admin")');
+        };
+
+        AdminService.getMovieCancellationRequest = function () {
+            return $http.get('@Url.Action("GetMovieCancellationRequests", "Admin")');
+        };
+
+        AdminService.getEventUpdatesRequest = function () {
+            return $http.get('@Url.Action("GetEventUpdateRequests", "Admin")');
+        };
+
+        AdminService.getAdminUpdates = function () {
+            return $http.get('@Url.Action("GetUpdates", "Admin")');
+        };
+        return AdminService;
+    }]);
+
+    adminApp.controller("adminController", function ($scope, AdminService) {
+        var getAdminUpdates = function () {
+            AdminService.getEventUpdatesRequest()
+                    .success(function (data) {
+                        $scope.eventRequests = data;
+                    })
+                    .error(function (error) {
+                    });
+            AdminService.getEventCancellationRequests()
+                    .success(function (data) {
+                        $scope.eventCancellationRequests = data;
+                    })
+                    .error(function (error) {
+                    });
+            AdminService.getMovieCancellationRequest()
+                    .success(function (data) {
+                        $scope.movieCancellationRequests = data;
+                    }).error(function (error) {
+                    });
+            AdminService.getAdminUpdates()
+                    .success(function (data) {
+                        $scope.adminUpdates = data;
+                    }).error(function (error) {
+                    });
+        };
+
+        getAdminUpdates();
+
+    });
+</script>

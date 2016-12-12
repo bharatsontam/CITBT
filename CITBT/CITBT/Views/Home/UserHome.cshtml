@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "User";
+}
+<style>
+    a {
+        -webkit-transition: all 150ms ease;
+        -moz-transition: all 150ms ease;
+        -ms-transition: all 150ms ease;
+        -o-transition: all 150ms ease;
+        transition: all 150ms ease;
+    }
+
+    .control-box {
+        text-align: right;
+        width: 100%;
+    }
+
+    ul.thumbnails {
+        margin-bottom: 0px;
+    }
+
+    .carousel-control {
+        background: #666;
+        border: 0px;
+        border-radius: 0px;
+        display: inline-block;
+        font-size: 34px;
+        font-weight: 200;
+        line-height: 18px;
+        opacity: 0.5;
+        padding: 4px 10px 0px;
+        position: static;
+        height: 30px;
+        width: 15px;
+    }
+
+    li {
+        list-style-type: none;
+    }
+</style>
+<br />
+<br />
+<div ng-app="UserApp">
+    <div class="container" ng-controller="userController">
+        <div class="col-xs-6">
+            <h3>Upcoming movies</h3>
+            <div class="carousel slide" id="myCarousel" ng-if="UpcomingMovies.length > 0">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <ul class="thumbnails">
+                            <li class="col-sm-3" ng-repeat="UpcomingMovie in UpcomingMovies">
+                                <div class="fff">
+                                    <div class="thumbnail">
+                                        <a href="@Url.Action("Detail", "Movies")/{{UpcomingMovie.Id}}"><img height="70" width="80" class="img-thumbnail img-height-width" src="data:image/png;base64,{{UpcomingMovie.Image}}" alt=""></a>
+                                    </div>
+                                    <div class="caption">
+                                        <a class="btn btn-mini" href="@Url.Action("Create", "BookingMovie")?movieId={{UpcomingMovie.Id}}">Book Movie</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.control-box -->
+
+            </div>
+            <p><h4 style="color:red" ng-if="UpcomingMovies.length == 0">No Upcoming movies</h4></p>
+        </div>
+        <div class="col-xs-6">
+            <h3>Upcoming events</h3>
+            <div class="carousel slide" id="myCarousel1" ng-if="UpcomingEvents.length > 0">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <ul class="thumbnails">
+                            <li class="col-sm-3" ng-repeat="UpcomingEvent in UpcomingEvents">
+                                <div class="fff">
+                                    <div class="thumbnail">
+                                        <a href="@Url.Action("Detail","Events")/{{UpcomingEvent.Id}}"><img class="img-thumbnail img-height-width" height="70" width="80" src="data:image/png;base64,{{UpcomingEvent.Image}}" alt=""></a>
+                                    </div>
+                                    <div class="caption">
+                                        <a class="btn btn-mini" href="@Url.Action("Create", "EventRegister")?eventId={{UpcomingEvent.Id}}">Register</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p><h4 style="color:red" ng-if="UpcomingEvents.length == 0">No Upcoming events</h4></p>
+        </div>
+    </div>
+    <div class="container" ng-controller="userController">
+        <div class="col-xs-6">
+            <h3>Booked movies</h3>
+            <div class="col-md-6">
+                <table class="table table-bordered" ng-if="BookedMovies.length > 0">
+                    <tr ng-repeat="BookedMovie in BookedMovies">
+                        <td>
+                            <label ng-bind="BookedMovie.MovieName"></label>
+                        </td>
+                        <td>
+                            <a class="glyphicon glyphicon-remove" href="@Url.Action("Delete", "BookingMovie")/{{BookedMovie.Id}}"></a>
+                        </td>
+                    </tr>
+                </table>
+                <p><h4 style="color:red" ng-if="BookedMovies.length == 0">No Booked movies</h4></p>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <h3>Registered events</h3>
+            <div class="col-md-6">
+                <table class="table table-bordered" ng-if="RegisteredEvents.length > 0">
+                    <tr ng-repeat="RegisteredEvent in RegisteredEvents">
+                        <td>
+                            <label ng-bind="RegisteredEvent.EventName"></label>
+                        </td>
+                        <td>
+                            <a class="glyphicon glyphicon-remove btn btn-danger" href="@Url.Action("Delete", "EventRegister")/{{RegisteredEvent.Id}}"></a>
+                        </td>
+                    </tr>
+                </table>
+                <p><h4 style="color:red" ng-if="RegisteredEvents.length == 0">No Registered Events</h4></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var userApp = angular.module("UserApp", []);
+
+    userApp.factory("UserService", ['$http', function ($http) {
+        var userService = {};
+
+        userService.GetUpcomingMovies = function () {
+            return $http.get('@Url.Action("GetUpcomingMovies", "UserHome")');
+        }
+        userService.GetUpcomingEvents = function () {
+            return $http.get('@Url.Action("GetUpcomingEvents", "UserHome")');
+        }
+        userService.GetBookedMovies = function () {
+            return $http.get('@Url.Action("GetBookedMovies", "UserHome")');
+        }
+        userService.GetRegisteredEvents = function () {
+            return $http.get('@Url.Action("GetRegisteredEvents", "UserHome")');
+        }
+        return userService;
+    }]);
+
+    userApp.controller("userController", function ($scope, UserService) {
+
+        var getUserUpdates = function () {
+            UserService.GetUpcomingMovies()
+            .success(function (data) {
+                $scope.UpcomingMovies = data;
+            })
+            .error(function (error) { });
+
+            UserService.GetUpcomingEvents()
+            .success(function (data) {
+                $scope.UpcomingEvents = data;
+            })
+            .error(function (error) { });
+
+            UserService.GetBookedMovies()
+            .success(function (data) {
+                $scope.BookedMovies = data;
+            })
+            .error(function (error) { });
+
+            UserService.GetRegisteredEvents()
+            .success(function (data) {
+                $scope.RegisteredEvents = data;
+            })
+            .error(function (error) { });
+        };
+
+        getUserUpdates();
+
+    });
+
+</script>

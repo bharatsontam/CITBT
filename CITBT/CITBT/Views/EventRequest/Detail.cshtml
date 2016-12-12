@@ -1,0 +1,116 @@
+﻿@model CITBT.ViewModels.Events.EventRequests.EventRequestDetailViewModel
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Requested User
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organizer.FirstName) @Html.DisplayFor(model => model.Organizer.LastName) 
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestDate)
+        </dd>
+
+        <dt>
+            Requested Event name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestAddress1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestAddress1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestAddress2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestAddress2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestZipCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestZipCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestOrganizer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestOrganizer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestEventDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestEventDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestEntryFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestEntryFee)
+        </dd>        
+    </dl>
+</div>
+<p>
+    @if (!Model.IsApproved)
+    {
+        @Html.ActionLink("Approve", "Approve", new { id = Model.Id })
+    }
+    
+    @Html.ActionLink("Back to Event Requests List", "Index")
+</p>
